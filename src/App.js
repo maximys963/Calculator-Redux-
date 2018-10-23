@@ -1,28 +1,57 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
-import './App.css';
+import './App.scss';
 
-class App extends Component {
-  render() {
-    return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
-      </div>
-    );
-  }
+class Calculator extends Component{
+    constructor(props){
+        super(props);
+        this.state = {
+          default: null,
+        }
+    }
+
+    render(){
+        return(
+            <div className="main-container">
+                <div id='dislay'>012345</div>
+                <div className='btn-blocks-container'>
+                    <div className='left-btns-container'>
+                        <div id="clear">AC</div>
+                        <div className='left-numbers'>
+                            <div className='couple-container'>
+                                <div id='seven'>7</div>
+                                <div id='eight'>8</div>
+                            </div>
+                            <div className='couple-container'>
+                                <div id='four'>4</div>
+                                <div id='five'>5</div>
+                            </div>
+                            <div className='couple-container'>
+                                <div id='one'>1</div>
+                                <div id='two'>2</div>
+                            </div>
+                        </div>
+                        <div id="zero">0</div>
+                    </div>
+                    <div className='right-btns-container'>
+                        <div className='first-vertical'>
+                            <div id='devide'>/</div>
+                            <div id='nine'>9</div>
+                            <div id='six'>6</div>
+                            <div id='three'>3</div>
+                            <div id="decimal">.</div>
+                        </div>
+                        <div className='second-vertical'>
+                            <div id="multiply">x</div>
+                            <div id="subtract">-</div>
+                            <div id="add">+</div>
+                            <div id="equals">=</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        )
+    }
 }
 
-export default App;
+
+export default Calculator
