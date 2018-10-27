@@ -1,18 +1,13 @@
 import React, { Component } from 'react';
 import './App.scss';
+import {connect} from 'react-redux'
 
-class Calculator extends Component{
-    constructor(props){
-        super(props);
-        this.state = {
-          default: null,
-        }
-    }
 
+export default class Calculator extends Component{
     render(){
         return(
             <div className="main-container">
-                <div id='dislay'>012345</div>
+                <div id='dislay'>{this.props.numbers}</div>
                 <div className='btn-blocks-container'>
                     <div className='left-btns-container'>
                         <div id="clear">AC</div>
@@ -54,4 +49,19 @@ class Calculator extends Component{
 }
 
 
-export default Calculator
+
+const mapStateToProps = state => {
+    return {numbers: state.initialNumber}
+};
+
+const mapDispatchToProps = dispatch => {
+    return {
+        toggleAdd: () =>{
+            dispatch({
+                type: 'ADD'
+            })
+        }
+    }
+};
+connect(mapStateToProps, mapDispatchToProps)(Calculator);
+
