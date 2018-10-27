@@ -6,12 +6,17 @@ import Provider from "react-redux/es/components/Provider";
 import Calculator from './App'
 
 const initialState = {
-    initialNumber: '22'
+    initialNumber: '0',
+    currentOperand: null,
+    operationString: ''
 };
 const store = createStore((state = initialState, action) => {
     switch (action.type){
-        case 'ADD': return {
-            ...state, initialNumber: 55
+        case 'NUMBER': return {
+            ...state, currentOperand: 55, operationString: action.payload
+        };
+        case 'CLEAR': return {
+            ...state, initialNumber: 0
         };
         default: return{
             ...state
@@ -20,9 +25,9 @@ const store = createStore((state = initialState, action) => {
 }, window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__());
 window.store = store;
 
-store.subscribe(()=>{
-    console.log(store.getState());
-});
+// store.subscribe(()=>{
+//     console.log(store.getState());
+// });
 
 
 

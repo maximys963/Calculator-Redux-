@@ -3,14 +3,14 @@ import './App.scss';
 import {connect} from 'react-redux'
 
 
-export default class Calculator extends Component{
+ class Calculator extends Component{
     render(){
         return(
             <div className="main-container">
-                <div id='dislay'>{this.props.numbers}</div>
+                <div id='dislay'>{this.props.currentValue ? this.props.currentValue : this.props.initialValue}</div>
                 <div className='btn-blocks-container'>
                     <div className='left-btns-container'>
-                        <div id="clear">AC</div>
+                        <div id="clear" onClick={()=>{this.props.toggleClear()}}>AC</div>
                         <div className='left-numbers'>
                             <div className='couple-container'>
                                 <div id='seven'>7</div>
@@ -21,7 +21,11 @@ export default class Calculator extends Component{
                                 <div id='five'>5</div>
                             </div>
                             <div className='couple-container'>
-                                <div id='one'>1</div>
+                                <div id='one' onClick={(e)=>{
+                                    this.props.toggleAdd(e.target.innerHTML)
+                                    // console.log(e.target.innerHTML)
+
+                                }}>1</div>
                                 <div id='two'>2</div>
                             </div>
                         </div>
@@ -50,18 +54,29 @@ export default class Calculator extends Component{
 
 
 
-const mapStateToProps = state => {
-    return {numbers: state.initialNumber}
+const mapStateToProps = (state) => {
+    return {
+        initialValue: state.initialNumber,
+        currentValue: state.currentOperand
+    };
 };
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch) => {
     return {
-        toggleAdd: () =>{
+        toggleAdd: (payload) =>{
             dispatch({
-                type: 'ADD'
+                type: 'NUMBER',
+                 payload: payload
+            })
+        },
+        toggleClear: () =>{
+            dispatch({
+                type: 'CLEAR'
             })
         }
+
     }
 };
-connect(mapStateToProps, mapDispatchToProps)(Calculator);
+export default connect(mapStateToProps, mapDispatchToProps)(Calculator);
+
 
