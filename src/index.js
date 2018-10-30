@@ -8,15 +8,18 @@ import Calculator from './App'
 const initialState = {
     initialNumber: '0',
     currentOperand: null,
-    operationString: ''
+    operationString: []
 };
 const store = createStore((state = initialState, action) => {
     switch (action.type){
         case 'NUMBER': return {
-            ...state, currentOperand: 55, operationString: action.payload
+            ...state, currentOperand: action.payload, operationString: [...state.operationString, action.payload]
+        };
+        case 'OPERATION': return {
+            ...state, operationString: [...state.operationString, action.payload]
         };
         case 'CLEAR': return {
-            ...state, initialNumber: 0
+            ...state, currentOperand: 0
         };
         default: return{
             ...state
@@ -25,12 +28,9 @@ const store = createStore((state = initialState, action) => {
 }, window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__());
 window.store = store;
 
-// store.subscribe(()=>{
-//     console.log(store.getState());
-// });
-
-
-
+store.subscribe(()=>{
+    console.log(store.getState());
+});
 
 
 
@@ -40,5 +40,3 @@ window.store = store;
 ReactDOM.render( <Provider store={store}>
     <Calculator/>
 </Provider>, document.getElementById('root'));
-
-

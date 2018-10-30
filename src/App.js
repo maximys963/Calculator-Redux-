@@ -3,7 +3,17 @@ import './App.scss';
 import {connect} from 'react-redux'
 
 
+
+
+
+
  class Calculator extends Component{
+     toggleResult = () => {
+         let resultArr = this.props.resultArray;
+         let result = resultArr.join('');
+         console.log(result);
+         // this.props.toggleAdd();
+     };
     render(){
         return(
             <div className="main-container">
@@ -13,37 +23,33 @@ import {connect} from 'react-redux'
                         <div id="clear" onClick={()=>{this.props.toggleClear()}}>AC</div>
                         <div className='left-numbers'>
                             <div className='couple-container'>
-                                <div id='seven'>7</div>
-                                <div id='eight'>8</div>
+                                <div id='seven' onClick={(e)=> {this.props.toggleAdd(e.target.innerHTML)}}>7</div>
+                                <div id='eight' onClick={(e)=> {this.props.toggleAdd(e.target.innerHTML)}}>8</div>
                             </div>
                             <div className='couple-container'>
-                                <div id='four'>4</div>
-                                <div id='five'>5</div>
+                                <div id='four' onClick={(e)=> {this.props.toggleAdd(e.target.innerHTML)}}>4</div>
+                                <div id='five' onClick={(e)=> {this.props.toggleAdd(e.target.innerHTML)}}>5</div>
                             </div>
                             <div className='couple-container'>
-                                <div id='one' onClick={(e)=>{
-                                    this.props.toggleAdd(e.target.innerHTML)
-                                    // console.log(e.target.innerHTML)
-
-                                }}>1</div>
-                                <div id='two'>2</div>
+                                <div id='one' onClick={(e)=>{this.props.toggleAdd(e.target.innerHTML)}}>1</div>
+                                <div id='two' onClick={(e)=> {this.props.toggleAdd(e.target.innerHTML)}}>2</div>
                             </div>
                         </div>
-                        <div id="zero">0</div>
+                        <div id="zero" onClick={(e)=> {this.props.toggleAdd(e.target.innerHTML)}}>0</div>
                     </div>
                     <div className='right-btns-container'>
                         <div className='first-vertical'>
                             <div id='devide'>/</div>
-                            <div id='nine'>9</div>
-                            <div id='six'>6</div>
-                            <div id='three'>3</div>
+                            <div id='nine' onClick={(e)=> {this.props.toggleAdd(e.target.innerHTML)}}>9</div>
+                            <div id='six' onClick={(e)=> {this.props.toggleAdd(e.target.innerHTML)}}>6</div>
+                            <div id='three' onClick={(e)=> {this.props.toggleAdd(e.target.innerHTML)}}>3</div>
                             <div id="decimal">.</div>
                         </div>
                         <div className='second-vertical'>
-                            <div id="multiply">x</div>
-                            <div id="subtract">-</div>
-                            <div id="add">+</div>
-                            <div id="equals">=</div>
+                            <div id="multiply" onClick={(e)=> {this.props.toggleOperation(e.target.innerHTML)}}>*</div>
+                            <div id="subtract" onClick={(e)=> {this.props.toggleOperation(e.target.innerHTML)}}>-</div>
+                            <div id="add" onClick={(e)=> {this.props.toggleOperation(e.target.innerHTML)}}>+</div>
+                            <div id="equals" onClick={()=>{this.toggleResult()}}>=</div>
                         </div>
                     </div>
                 </div>
@@ -57,7 +63,8 @@ import {connect} from 'react-redux'
 const mapStateToProps = (state) => {
     return {
         initialValue: state.initialNumber,
-        currentValue: state.currentOperand
+        currentValue: state.currentOperand,
+        resultArray: state.operationString,
     };
 };
 
@@ -73,7 +80,14 @@ const mapDispatchToProps = (dispatch) => {
             dispatch({
                 type: 'CLEAR'
             })
+        },
+        toggleOperation: (payload) =>{
+            dispatch({
+                type: 'OPERATION',
+                payload: payload
+            })
         }
+
 
     }
 };
