@@ -8,47 +8,77 @@ import {connect} from 'react-redux'
 
 
  class Calculator extends Component{
+    constructor(props){
+        super(props);
+        this.state = {
+            displayValue: '',
+            operatorWasClicked: false
+        }
+    }
+
      toggleResult = () => {
          let resultArr = this.props.resultArray;
          let result = resultArr.join('');
          console.log(result);
          // this.props.toggleAdd();
      };
+     toggleNumber = (e) => {
+         if(this.state.operatorWasClicked){
+             this.setState({
+                 displayValue: e.target.innerHTML,
+                 operatorWasClicked: false
+             });
+
+         }else{
+             this.setState({
+                 displayValue: this.state.displayValue.concat(e.target.innerHTML)
+             });
+         }
+
+     };
+     onClickOperation = (e) => {
+         this.props.toggleOperation(this.state.displayValue);
+         this.props.toggleOperation(e.target.innerHTML);
+         this.setState({
+             operatorWasClicked: true
+         })
+     };
+
     render(){
         return(
             <div className="main-container">
-                <div id='dislay'>{this.props.currentValue ? this.props.currentValue : this.props.initialValue}</div>
+                <div id='dislay'>{this.state.displayValue ? this.state.displayValue : "0"}</div>
                 <div className='btn-blocks-container'>
                     <div className='left-btns-container'>
                         <div id="clear" onClick={()=>{this.props.toggleClear()}}>AC</div>
                         <div className='left-numbers'>
                             <div className='couple-container'>
-                                <div id='seven' onClick={(e)=> {this.props.toggleAdd(e.target.innerHTML)}}>7</div>
-                                <div id='eight' onClick={(e)=> {this.props.toggleAdd(e.target.innerHTML)}}>8</div>
+                                <div id='seven' onClick={this.toggleNumber}>7</div>
+                                <div id='eight' onClick={this.toggleNumber}>8</div>
                             </div>
                             <div className='couple-container'>
-                                <div id='four' onClick={(e)=> {this.props.toggleAdd(e.target.innerHTML)}}>4</div>
-                                <div id='five' onClick={(e)=> {this.props.toggleAdd(e.target.innerHTML)}}>5</div>
+                                <div id='four' onClick={this.toggleNumber}>4</div>
+                                <div id='five' onClick={this.toggleNumber}>5</div>
                             </div>
                             <div className='couple-container'>
-                                <div id='one' onClick={(e)=>{this.props.toggleAdd(e.target.innerHTML)}}>1</div>
-                                <div id='two' onClick={(e)=> {this.props.toggleAdd(e.target.innerHTML)}}>2</div>
+                                <div id='one' onClick={this.toggleNumber}>1</div>
+                                <div id='two' onClick={this.toggleNumber}>2</div>
                             </div>
                         </div>
-                        <div id="zero" onClick={(e)=> {this.props.toggleAdd(e.target.innerHTML)}}>0</div>
+                        <div id="zero" onClick={this.toggleNumber}>0</div>
                     </div>
                     <div className='right-btns-container'>
                         <div className='first-vertical'>
                             <div id='devide'>/</div>
-                            <div id='nine' onClick={(e)=> {this.props.toggleAdd(e.target.innerHTML)}}>9</div>
-                            <div id='six' onClick={(e)=> {this.props.toggleAdd(e.target.innerHTML)}}>6</div>
-                            <div id='three' onClick={(e)=> {this.props.toggleAdd(e.target.innerHTML)}}>3</div>
+                            <div id='nine' onClick={this.toggleNumber}>9</div>
+                            <div id='six' onClick={this.toggleNumber}>6</div>
+                            <div id='three' onClick={this.toggleNumber}>3</div>
                             <div id="decimal">.</div>
                         </div>
                         <div className='second-vertical'>
-                            <div id="multiply" onClick={(e)=> {this.props.toggleOperation(e.target.innerHTML)}}>*</div>
-                            <div id="subtract" onClick={(e)=> {this.props.toggleOperation(e.target.innerHTML)}}>-</div>
-                            <div id="add" onClick={(e)=> {this.props.toggleOperation(e.target.innerHTML)}}>+</div>
+                            <div id="multiply" onClick={this.onClickOperation}>*</div>
+                            <div id="subtract" onClick={this.onClickOperation}>-</div>
+                            <div id="add" onClick={this.onClickOperation}>+</div>
                             <div id="equals" onClick={()=>{this.toggleResult()}}>=</div>
                         </div>
                     </div>
