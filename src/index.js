@@ -16,7 +16,7 @@ const store = createStore((state = initialState, action) => {
             ...state, currentOperand: action.payload, operationString: [...state.operationString, action.payload]
         };
         case 'OPERATION': return {
-            ...state, operationString: [...state.operationString, action.payload]
+            ...state, operationString: [...state.operationString, action.payload],
         };
         case 'CLEAR': return {
             ...state, currentOperand: 0

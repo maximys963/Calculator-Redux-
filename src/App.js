@@ -3,10 +3,6 @@ import './App.scss';
 import {connect} from 'react-redux'
 
 
-
-
-
-
  class Calculator extends Component{
     constructor(props){
         super(props);
@@ -16,12 +12,11 @@ import {connect} from 'react-redux'
         }
     }
 
-     toggleResult = () => {
-         let resultArr = this.props.resultArray;
-         let result = resultArr.join('');
-         console.log(result);
-         // this.props.toggleAdd();
-     };
+     // toggleResult = () => {
+     //     let resultArr = this.props.resultArray;
+     //     let result = resultArr.join('');
+     //     console.log(result);
+     // };
      toggleNumber = (e) => {
          if(this.state.operatorWasClicked){
              this.setState({
@@ -34,14 +29,68 @@ import {connect} from 'react-redux'
                  displayValue: this.state.displayValue.concat(e.target.innerHTML)
              });
          }
+         this.props.toggleOperation(e.target.innerHTML);
+
 
      };
+     toggleDecimal = (e) =>{
+         if(this.state.displayValue === ''){
+             this.setState({
+                 displayValue: '0.'
+             })
+         }else{
+             this.setState({
+                 displayValue: this.state.displayValue.concat(e.target.innerHTML)
+             })
+         }
+     };
      onClickOperation = (e) => {
-         this.props.toggleOperation(this.state.displayValue);
+         // this.props.toggleOperation(this.state.displayValue);
          this.props.toggleOperation(e.target.innerHTML);
          this.setState({
              operatorWasClicked: true
          })
+     };
+
+     countEngine = () =>{
+         // this.props.toggleOperation(this.state.displayValue);
+         let operationArray = this.props.resultArray;
+         console.log(operationArray);
+         let result = 0;
+         for (let i = 0; i < operationArray.length; i++) {
+             let firstOperand = 0;
+             let secondOperand = 0;
+           if(operationArray[i+1] === '+'){
+               firstOperand = parseFloat(operationArray[i]);
+               secondOperand = parseFloat(operationArray[i+2]);
+               result = firstOperand + secondOperand;
+               operationArray[i+2] = result;
+               console.log(result);
+               i += 1;
+           } else if(operationArray[i+1] === '-'){
+               firstOperand = parseFloat(operationArray[i]);
+               secondOperand = parseFloat(operationArray[i+2]);
+               result = firstOperand - secondOperand;
+               operationArray[i+2] = result;
+               console.log(result);
+               i += 1;
+           }  else if(operationArray[i+1] === '*'){
+             firstOperand = parseFloat(operationArray[i]);
+             secondOperand = parseFloat(operationArray[i+2]);
+             result = firstOperand * secondOperand;
+             operationArray[i+2] = result;
+             console.log(result);
+             i += 1;
+         }else if(operationArray[i+1] === '/'){
+               firstOperand = parseFloat(operationArray[i]);
+               secondOperand = parseFloat(operationArray[i+2]);
+               result = firstOperand / secondOperand;
+               operationArray[i+2] = result;
+               console.log(result);
+               i += 1;
+           }
+
+         }
      };
 
     render(){
@@ -69,17 +118,17 @@ import {connect} from 'react-redux'
                     </div>
                     <div className='right-btns-container'>
                         <div className='first-vertical'>
-                            <div id='devide'>/</div>
+                            <div id='devide' onClick={this.onClickOperation}>/</div>
                             <div id='nine' onClick={this.toggleNumber}>9</div>
                             <div id='six' onClick={this.toggleNumber}>6</div>
                             <div id='three' onClick={this.toggleNumber}>3</div>
-                            <div id="decimal">.</div>
+                            <div id="decimal" onClick={this.toggleDecimal} >.</div>
                         </div>
                         <div className='second-vertical'>
                             <div id="multiply" onClick={this.onClickOperation}>*</div>
                             <div id="subtract" onClick={this.onClickOperation}>-</div>
                             <div id="add" onClick={this.onClickOperation}>+</div>
-                            <div id="equals" onClick={()=>{this.toggleResult()}}>=</div>
+                            <div id="equals" onClick={this.countEngine}>=</div>
                         </div>
                     </div>
                 </div>
